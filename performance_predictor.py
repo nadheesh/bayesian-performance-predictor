@@ -119,7 +119,10 @@ def read_csv(path, scaler, feature_idx, label_idx, shuffle=True):
     X = df.iloc[:, feature_idx]
     y = df.iloc[:, label_idx]
 
-    X = scaler.fit_transform(X, y)
+    if not hasattr(scaler, "data_max_"):
+        scaler.fit(X)
+
+    X = scaler.transform(X)
     y = y.values.flatten()
 
     # if shuffle:
@@ -201,11 +204,11 @@ def eval_bayesian_rbf(X, y, eval_X, eval_y):
 
 # PARAMETERS
 
-# label_index = 23  # latency col
-# feature_indices = [0, 1, 2, 3, 4]
-
-label_index = 29 # throughput col
-feature_indices = [0, 1, 2, 3]
+label_index = 23  # latency col
+feature_indices = [0, 1, 2, 3, 4]
+#
+# label_index = 29 # throughput col
+# feature_indices = [0, 1, 2, 3]
 
 if __name__ == '__main__':
     # TODO change the scaler
